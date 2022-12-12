@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomSmallTextField extends StatelessWidget {
   TextEditingController controller = TextEditingController();
   String hint;
   bool obscure;
   FocusNode focusNode;
   FocusNode? nextNode;
-  CustomTextField(
+  CustomSmallTextField(
       {super.key,
       required this.controller,
       required this.hint,
@@ -27,5 +27,29 @@ class CustomTextField extends StatelessWidget {
         controller: controller,
         decoration: InputDecoration(hintText: hint),
         obscureText: obscure);
+  }
+}
+
+class CustomLargeTextField extends StatelessWidget {
+  CustomLargeTextField(
+      {super.key,
+      required this.fontSize,
+      required this.controller,
+      required this.hint,
+      required this.height});
+  TextEditingController controller = TextEditingController();
+  String hint;
+  double height, fontSize;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+      child: TextField(
+        controller: controller,
+        style: TextStyle(fontSize: fontSize),
+        decoration: InputDecoration(hintText: hint, border: InputBorder.none),
+      ),
+    );
   }
 }

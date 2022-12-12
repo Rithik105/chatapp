@@ -42,7 +42,8 @@ class ChatLogOutState extends ChatState {}
 class ChatCubit extends Cubit<ChatState> {
   ChatCubit() : super(ChatInitialState());
 
-  void register(String email, String password, String cpassword) async {
+  void register(
+      String name, String email, String password, String cpassword) async {
     if (email.isEmpty && password.isEmpty) {
       emit(ChatErrorState(0));
     } else if (password != cpassword) {
@@ -51,6 +52,7 @@ class ChatCubit extends Cubit<ChatState> {
       try {
         await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
+        createDatabase(name, email);
         Fluttertoast.showToast(msg: "Account successfully created");
         emit(ChatRegisterState());
       } on FirebaseAuthException catch (e) {
@@ -86,21 +88,36 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  void fetchData(String email) async {
+  Future<void> createDatabase(String name, String email) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(email)
+        .set({"name": name});
+  }
+
+  Future<void> createTask(String email, String title, String note) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(email)
+        .collection("Tasks")
+        .add({"title": title, "note": note});
+  }
+
+  Future<void> updateTask(
+      String email, String title, String note, String id) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(email)
+        .collection("Tasks")
+        .doc(id)
+        .update({"title": title, "note": note});
+  }
+
+  Future fetchDatabase(String email) async {
     try {
-      print(email);
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(email)
-          .get()
-          .then((value) {
-        print("value =  ${value.get("name")}");
-      });
-    } catch (e) {
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(email)
-          .set({"name": "rithik"});
+      await FirebaseFirestore.instance.collection("Users").doc(email).get();
+    } on FirebaseException catch (e) {
+      Fluttertoast.showToast(msg: e.code);
     }
   }
 }

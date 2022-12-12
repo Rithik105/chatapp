@@ -1,4 +1,3 @@
-import 'package:chatapp/Screens/create_screen.dart';
 import 'package:chatapp/Screens/home_screen.dart';
 import 'package:chatapp/Screens/login_screen.dart';
 import 'package:chatapp/Bloc/chat_cubit.dart';
@@ -25,9 +24,17 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => ChatCubit(),
       child: MaterialApp(
+        theme: ThemeData(
+            scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+            appBarTheme: AppBarTheme(
+                backgroundColor: Color.fromARGB(255, 0, 238, 255),
+                foregroundColor: Colors.black),
+            accentColor: Color.fromARGB(255, 0, 238, 255)),
         debugShowCheckedModeBanner: false,
         home: (FirebaseAuth.instance.currentUser != null)
-            ? const HomeScreen()
+            ? HomeScreen(
+                email: FirebaseAuth.instance.currentUser!.email!,
+              )
             : LoginScreen(),
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:chatapp/Bloc/chat_cubit.dart';
-import 'package:chatapp/Screens/create_screen.dart';
+import 'package:chatapp/Screens/create_profile_screen.dart';
 import 'package:chatapp/Screens/home_screen.dart';
+import 'package:chatapp/Widgets/button.dart';
 
 import 'package:chatapp/Widgets/text_field.dart';
 import 'package:flutter/material.dart';
@@ -9,9 +10,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class LoginScreen extends StatelessWidget {
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
-  FocusNode email = FocusNode();
-  FocusNode password = FocusNode();
-  FocusNode login = FocusNode();
+
+  final FocusNode email = FocusNode();
+  final FocusNode password = FocusNode();
+  final FocusNode login = FocusNode();
 
   LoginScreen({super.key});
 
@@ -19,8 +21,10 @@ class LoginScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Login"),
-        backgroundColor: Colors.red,
+        title: const Text(
+          "Login",
+          style: TextStyle(color: Colors.black),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
@@ -29,13 +33,13 @@ class LoginScreen extends StatelessWidget {
           child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomTextField(
+                CustomSmallTextField(
                     focusNode: email,
                     nextNode: password,
                     controller: _email,
                     hint: "Email",
                     obscure: false),
-                CustomTextField(
+                CustomSmallTextField(
                     focusNode: password,
                     nextNode: login,
                     controller: _password,
@@ -50,31 +54,31 @@ class LoginScreen extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => BlocProvider(
                                     create: (context) => ChatCubit()
-                                      ..fetchData(state.user.user!.email!),
-                                    child: HomeScreen(),
+                                      ..fetchDatabase(state.user.user!.email!),
+                                    child: HomeScreen(
+                                      email: _email.text,
+                                    ),
                                   )));
                     }
                   },
-                  child: ElevatedButton(
-                    onPressed: () {
-                      BlocProvider.of<ChatCubit>(context)
-                          .login(_email.text, _password.text);
-                    },
-                    style:
-                        ElevatedButton.styleFrom(backgroundColor: Colors.red),
-                    child: const Text("LOGIN"),
-                  ),
+                  child: CustomButton(
+                      ontap: () {
+                        BlocProvider.of<ChatCubit>(context)
+                            .login(_email.text, _password.text);
+                      },
+                      child: const Text("LOGIN",
+                          style: TextStyle(color: Colors.black))),
                 ),
                 InkWell(
                   child: const Text(
                     "Create account?",
                     style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.w400),
+                        color: Colors.black, fontWeight: FontWeight.w400),
                   ),
                   onTap: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
-                      return CreateScreen();
+                      return CreateProfileScreen();
                     }));
                   },
                 )
