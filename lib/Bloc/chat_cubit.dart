@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -119,5 +118,14 @@ class ChatCubit extends Cubit<ChatState> {
     } on FirebaseException catch (e) {
       Fluttertoast.showToast(msg: e.code);
     }
+  }
+
+  Future<void> deleteTask(String email, String id) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(email)
+        .collection("Tasks")
+        .doc(id)
+        .delete();
   }
 }

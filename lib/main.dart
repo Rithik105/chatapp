@@ -1,4 +1,4 @@
-import 'package:chatapp/Screens/home_screen.dart';
+import 'package:chatapp/Screens/home_screen/home_screen.dart';
 import 'package:chatapp/Screens/login_screen.dart';
 import 'package:chatapp/Bloc/chat_cubit.dart';
 import 'package:chatapp/firebase_options.dart';
@@ -25,11 +25,12 @@ class MyApp extends StatelessWidget {
       create: (context) => ChatCubit(),
       child: MaterialApp(
         theme: ThemeData(
-            scaffoldBackgroundColor: Color.fromARGB(255, 255, 255, 255),
-            appBarTheme: AppBarTheme(
+            scaffoldBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
+            appBarTheme: const AppBarTheme(
                 backgroundColor: Color.fromARGB(255, 0, 238, 255),
                 foregroundColor: Colors.black),
-            accentColor: Color.fromARGB(255, 0, 238, 255)),
+            colorScheme: ColorScheme.fromSwatch()
+                .copyWith(secondary: const Color.fromARGB(255, 0, 238, 255))),
         debugShowCheckedModeBanner: false,
         home: (FirebaseAuth.instance.currentUser != null)
             ? HomeScreen(

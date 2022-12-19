@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class CustomSmallTextField extends StatelessWidget {
   TextEditingController controller = TextEditingController();
   String hint;

@@ -1,6 +1,6 @@
 import 'package:chatapp/Bloc/chat_cubit.dart';
 import 'package:chatapp/Screens/create_profile_screen.dart';
-import 'package:chatapp/Screens/home_screen.dart';
+import 'package:chatapp/Screens/home_screen/home_screen.dart';
 import 'package:chatapp/Widgets/button.dart';
 
 import 'package:chatapp/Widgets/text_field.dart';
