@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:chatapp/Bloc/chat_cubit.dart';
 import 'package:chatapp/Widgets/text_field.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 // ignore: must_be_immutable
 class CreateTaskScreen extends StatelessWidget {
@@ -20,7 +22,7 @@ class CreateTaskScreen extends StatelessWidget {
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(MediaQuery.of(context).size.height * 0.02),
         child: Column(
           children: [
             CustomLargeTextField(

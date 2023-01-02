@@ -1,17 +1,20 @@
+import 'package:chatapp/Models/user_model.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:chatapp/Bloc/chat_cubit.dart';
-import 'package:chatapp/Screens/create_task_screen.dart';
+import 'package:chatapp/Screens/home_screen/create_task_screen.dart';
 import 'package:chatapp/Screens/home_screen/chat_screen.dart';
 import 'package:chatapp/Screens/home_screen/profile_screen.dart';
 import 'package:chatapp/Screens/home_screen/task_screen.dart';
 import 'package:chatapp/Screens/login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key, required this.email});
-  final String email;
+  HomeScreen({
+    super.key,
+  });
+  // UserModel? user;
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -25,54 +28,62 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          BlocListener<ChatCubit, ChatState>(
-            listener: (context, state) {
-              if (state is ChatLogOutState) {
-                // Navigator.popUntil(context, (route) {route.isFirst);
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) {
-                  return LoginScreen();
-                }));
-              }
-            },
-            child: IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text("Do you really want to logout?"),
+          IconButton(
+              onPressed: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return BlocListener<ChatCubit, ChatState>(
+                        listener: (context, state) {
+                          if (state is ChatLogOutState) {
+                            Navigator.popUntil(
+                                context, (route) => route.isFirst);
+
+                            Navigator.pushReplacement(context,
+                                MaterialPageRoute(builder: (context) {
+                              return LoginScreen();
+                            }));
+                          }
+                        },
+                        child: AlertDialog(
+                          title: const Text("Do you really want to logout?"),
                           actions: [
                             TextButton(
                                 onPressed: () {
                                   BlocProvider.of<ChatCubit>(context).logout();
                                 },
-                                child: Text("Yes")),
+                                child: const Text("Yes")),
                             TextButton(
                                 onPressed: () {
                                   Navigator.pop(context, false);
                                 },
-                                child: Text("No"))
+                                child: const Text("No"))
                           ],
-                        );
-                      });
-                },
-                icon: const Icon(Icons.logout)),
-          )
+                        ),
+                      );
+                    });
+              },
+              icon: const Icon(
+                Icons.logout,
+                color: Colors.white,
+              ))
         ],
-        title: const Text("Home"),
+        title: const Text(
+          "Home",
+          style: TextStyle(color: Colors.white),
+        ),
       ),
       body: _selectedIndex == 0
-          ? TaskScreen(email: widget.email)
+          ? TaskScreen(email: "sda")
           : _selectedIndex == 2
-              ? ProfileScreen()
-              : ChatScreen(),
+              ? const ProfileScreen()
+              : const ChatScreen(),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
             return CreateTaskScreen(
-              email: widget.email,
+              email: 'asd',
               title: TextEditingController(text: ""),
               note: TextEditingController(text: ""),
             );
@@ -87,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(
               icon: Icon(Icons.verified_user), label: "profile")
         ],
-        selectedItemColor: Color.fromARGB(255, 0, 238, 255),
+        selectedItemColor: const Color.fromARGB(255, 0, 238, 255),
         onTap: (value) {
           setState(() {
             _selectedIndex = value;
